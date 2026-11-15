@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" data-base="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A low-cost SDR testbed for 26 GHz 5G hardware | Esteban Gironda Lagrava</title>
+  <meta name="description" content="How one low-cost software-defined radio and a pair of mixers characterize, regulate and linearize 26 GHz 5G hardware without millimeter-wave instruments, and what I did in the project.">
+  <meta name="author" content="Esteban Gironda Lagrava">
+  <meta property="og:title" content="A low-cost SDR testbed for 26 GHz 5G hardware">
+  <meta property="og:description" content="Characterizing, regulating and linearizing 26 GHz 5G hardware with one low-cost SDR and a pair of mixers.">
+  <meta property="og:image" content="../assets/img/research/mmwave-testbed-photo.webp">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/archivo-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/stix-two-text-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="top-name" href="../index.html">Esteban Gironda Lagrava</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#news">News</a></li>
+        <li><a href="../index.html#research" aria-current="page">Research</a></li>
+        <li><a href="../index.html#publications">Publications</a></li>
+        <li><a href="../index.html#awards">Awards</a></li>
+        <li><a href="../index.html#cv">CV</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="proj-head">
+    <div class="wrap">
+      <p class="crumb"><a href="../index.html#research">Research</a></p>
+      <h1>A low-cost SDR testbed for 26&nbsp;GHz 5G hardware</h1>
+      <p class="lead">One software-defined radio and a pair of mixers stand in for the millimeter-wave signal generator, signal analyzer and network analyzer that our lab does not have. We use the bench to characterize amplifiers and filters, hold a transmitter at its best operating point, and linearize it.</p>
+      <dl class="glance">
+        <div><dt>Period</dt><dd>September 2025 to present</dd></div>
+        <div><dt>Group</dt><dd>Dr. Hugo Condori (advisor), UPB with Universidad Mayor de San Andrés</dd></div>
+        <div><dt>My part</dt><dd>Bench calibration, measurement automation, first-author characterization study</dd></div>
+        <div><dt>Output</dt><dd>Six IEEE conference papers, three already in IEEE Xplore</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="doc">
+    <div class="wrap">
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#why">Why build it</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#filter">Measuring a filter</a></li>
+          <li><a href="#amplifier">Stressing an amplifier</a></li>
+          <li><a href="#earlier">Earlier versions</a></li>
+          <li><a href="#control">Holding the operating point</a></li>
+          <li><a href="#dpd">Linearizing the transmitter</a></li>
+          <li><a href="#role">What I did</a></li>
+          <li><a href="#papers">Papers</a></li>
+        </ol>
+      </nav>
+
+      <div class="prose">
+
+        <section id="why">
+          <h2>Why build it</h2>
+          <p>5G NR at millimeter-wave frequencies uses wide channels and dense constellations such as 256-QAM, which leave little margin for amplifier nonlinearity. Checking a design therefore means measuring EVM, adjacent-channel leakage and AM-AM/AM-PM distortion under a real 5G waveform, and measuring the passive parts around the amplifier too.</p>
+          <p>The usual tools are a vector signal generator, a vector signal analyzer and a network analyzer that reach the band of interest. In the comparison we published in <a data-cite="iscas2026" href="../index.html#publications">ISCAS 2026</a>, such a generator and analyzer pair is priced above $250,000, against under $2,000 for this platform. For a group without that equipment, the alternative to a cheaper method is not measuring at all.</p>
+        </section>
+
+        <section id="how">
+          <h2>How it works</h2>
+          <p>The idea is an IF loopback. An ADALM-PLUTO SDR transmits a standard-compliant 5G NR waveform at a 5&nbsp;GHz intermediate frequency. An integrated up-converter moves it to 26&nbsp;GHz, where it passes through the device under test. A down-converter then brings the result back to 5&nbsp;GHz, and the same SDR captures it. All signal generation and analysis happens at a frequency a low-cost radio can handle; only the mixers and the device under test work at millimeter-wave.</p>
+
+          <figure class="fig pad">
+            <div class="frame scroll">
+              <svg class="sch" viewBox="0 34 1000 396" role="img" aria-labelledby="bd-title bd-desc">
+                <title id="bd-title">Block diagram of the IF-loopback testbed</title>
+                <desc id="bd-desc">On the 5 GHz side, the SDR transmit port feeds an IF conditioning board. An integrated converter mixes the signal up to the millimeter-wave band, where it passes through the device under test. A coupler sends part of the output to an RMS power detector read by a microcontroller; the rest is mixed back down to 5 GHz and returns to the SDR receive port. A PLL synthesizer, doubled inside the converter, drives both mixers.</desc>
+                <defs>
+                  <marker id="ah" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 .6L8 4L0 7.4Z"/></marker>
+                  <marker id="ahr" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow rf" d="M0 .6L8 4L0 7.4Z"/></marker>
+                </defs>
+
+                <rect class="zone-if" x="0" y="40" width="470" height="384" rx="4"/>
+                <rect class="zone-rf" x="486" y="40" width="514" height="384" rx="4"/>
+                <text class="strong" x="16" y="66">5 GHz IF side</text>
+                <text class="strong rf" x="502" y="66">mmWave side, 22 to 30 GHz</text>
+
+                <!-- transmit path -->
+                <path class="wire" d="M156 138H215" marker-end="url(#ah)"/>
+                <path class="wire" d="M416 138H542" marker-end="url(#ah)"/>
+                <path class="wire rf" d="M577 138H604"/>
+                <path class="wire rf" d="M634 138H705" marker-end="url(#ahr)"/>
+                <path class="wire rf" d="M882 138H920V326H635" marker-end="url(#ahr)"/>
+                <!-- receive path -->
+                <path class="wire rf" d="M604 326H578" marker-end="url(#ahr)"/>
+                <path class="wire" d="M543 326H157" marker-end="url(#ah)"/>
+                <!-- detector branch -->
+                <path class="wire rf" d="M904 230H883" marker-end="url(#ahr)"/>
+                <!-- local oscillator -->
+                <path class="wire" d="M480 232H542" marker-end="url(#ah)"/>
+                <path class="wire" d="M560 217V156" marker-end="url(#ah)"/>
+                <path class="wire" d="M560 247V308" marker-end="url(#ah)"/>
+
+                <rect class="thin dash" x="512" y="92" width="150" height="282" rx="6"/>
+                <text class="small" x="587" y="394" text-anchor="middle">Integrated up/down-converter</text>
+
+                <rect class="part" x="24" y="96" width="132" height="272" rx="3"/>
+                <text class="strong" x="90" y="218" text-anchor="middle">ADALM-PLUTO</text>
+                <text class="strong" x="90" y="238" text-anchor="middle">SDR</text>
+                <text class="small" x="90" y="264" text-anchor="middle">5G NR, 256-QAM</text>
+                <text class="small" x="90" y="282" text-anchor="middle">20 MHz</text>
+                <text x="144" y="126" text-anchor="end">Tx</text>
+                <text x="144" y="350" text-anchor="end">Rx</text>
+
+                <rect class="part" x="216" y="108" width="200" height="60" rx="3"/>
+                <text class="strong" x="316" y="135" text-anchor="middle">IF conditioning</text>
+                <text class="small" x="316" y="154" text-anchor="middle">LNAs and step attenuator</text>
+
+                <rect class="part" x="300" y="204" width="180" height="56" rx="3"/>
+                <text class="strong" x="390" y="229" text-anchor="middle">PLL synthesizer (LO)</text>
+                <text class="small" x="390" y="248" text-anchor="middle">8.5 to 12.5 GHz</text>
+
+                <circle class="part" cx="560" cy="138" r="17"/>
+                <path class="thin" d="M548 126L572 150M572 126L548 150"/>
+                <circle class="part" cx="560" cy="326" r="17"/>
+                <path class="thin" d="M548 314L572 338M572 314L548 338"/>
+                <rect class="part" x="543" y="217" width="34" height="30" rx="3"/>
+                <text class="strong" x="560" y="237" text-anchor="middle">×2</text>
+                <path class="part rf" d="M604 122V154L634 138Z"/>
+                <path class="part rf" d="M634 310V342L604 326Z"/>
+
+                <rect class="dut" x="706" y="106" width="176" height="64" rx="3"/>
+                <text class="strong rf" x="794" y="135" text-anchor="middle">Device under test</text>
+                <text class="small" x="794" y="154" text-anchor="middle">amplifier or filter</text>
+
+                <rect class="part rf" x="904" y="214" width="32" height="32" rx="3"/>
+                <text class="small" x="942" y="266">Coupler</text>
+
+                <rect class="part rf" x="706" y="202" width="176" height="56" rx="3"/>
+                <text class="strong" x="794" y="227" text-anchor="middle">RMS power detector</text>
+                <text class="small" x="794" y="246" text-anchor="middle">to microcontroller ADC</text>
+
+                <text class="small" x="186" y="130" text-anchor="middle">5 GHz</text>
+                <text class="small rf" x="928" y="186">26 GHz</text>
+                <text class="small rf" x="780" y="318" text-anchor="middle">26 GHz</text>
+                <text class="small" x="350" y="318" text-anchor="middle">5 GHz</text>
+              </svg>
+            </div>
+            <figcaption>The loop, redrawn from the block diagrams in our papers. The SDR only ever sees 5&nbsp;GHz. One synthesizer, doubled inside the converter, drives both mixers, so the up- and down-conversion share the same LO.</figcaption>
+          </figure>
+
+          <figure class="fig">
+            <a href="../assets/img/research/mmwave-testbed-photo.webp"><img src="../assets/img/research/mmwave-testbed-photo.webp" width="1600" height="595" loading="lazy" alt="Photograph of the boards on a white bench, labelled A to H and joined by coaxial cables, with an inset showing the filter under test."></a>
+            <figcaption>The bench during the 26&nbsp;GHz campaign. A: ADALM-PLUTO SDR. B: IF conditioning board with two BGU7258 low-noise amplifiers and a PE43711 step attenuator. C: PLL synthesizer used as LO. D: integrated up/down-converter. E: device under test, here a 26&nbsp;GHz band-pass filter. F: directional coupler. G: LTC5596 RMS power detector. H: STM32 microcontroller that reads the detector.
+              <span class="credit">Figure from <a data-cite="latincom2026-char" href="../index.html#publications">LATINCOM 2026</a>, to appear in IEEE Xplore.</span></figcaption>
+          </figure>
+
+          <p>Two configurations cover most of what we measure. With the loop open, the detector reads power directly at the output of a passive device, which gives its insertion loss. With the loop closed, a 256-QAM, 20&nbsp;MHz 5G NR waveform stresses an active device and the SDR demodulates what comes back.</p>
+        </section>
+
+        <section id="filter">
+          <h2>Measuring a filter without a network analyzer</h2>
+          <p>A filter needs no modulated signal, so a calibrated power reading is enough. The first step is to trust the detector: its output voltage was compared against a spectrum analyzer while the SDR swept a 5&nbsp;GHz tone over 50&nbsp;dB. The response is linear, with a slope of 28.82&nbsp;mV/dB and R² = 0.9997.</p>
+          <p>The LO is then swept so that the converter output moves from 22 to 30&nbsp;GHz, and the power is recorded twice at every frequency: at the mixer output alone, and after the filter. Insertion loss is the difference between the two. Because both readings come from the same detector, its offset cancels, and what remains is a slope mismatch between 5 and 26&nbsp;GHz that the detector's flat response bounds to about 1%.</p>
+
+          <div class="fig-row">
+            <figure class="fig">
+              <a href="../assets/img/research/mmwave-filter-power-sweep.webp"><img src="../assets/img/research/mmwave-filter-power-sweep.webp" width="1200" height="791" loading="lazy" alt="Output power against frequency from 22 to 30 GHz for the mixer alone and for the mixer followed by the band-pass filter."></a>
+              <figcaption>Power at the mixer output (orange) and after the filter (blue). The dip near 28.3&nbsp;GHz belongs to the mixer board, not to the filter.</figcaption>
+            </figure>
+            <figure class="fig">
+              <a href="../assets/img/research/mmwave-filter-insertion-loss.webp"><img src="../assets/img/research/mmwave-filter-insertion-loss.webp" width="1200" height="781" loading="lazy" alt="Insertion loss of the filter against frequency, flat near minus 3 dB between about 24 and 28 GHz and falling to about minus 28 dB outside."></a>
+              <figcaption>Insertion loss obtained by subtraction. The passband runs from 24.25 to 28&nbsp;GHz.
+                <span class="credit">Both figures from <a data-cite="latincom2026-char" href="../index.html#publications">LATINCOM 2026</a>, to appear in IEEE Xplore.</span></figcaption>
+            </figure>
+          </div>
+
+          <p>The sweep also exposed something the datasheet of the converter does not show: an attenuation dip near 28.3&nbsp;GHz that comes from the board. It sits well above the detector's sensing floor and is removed by the reference measurement, but it is the kind of detail that only shows up when the hardware is measured as built.</p>
+        </section>
+
+        <section id="amplifier">
+          <h2>Stressing an amplifier with a 5G waveform</h2>
+          <p>For an active device the first job is to find where the testbed itself is cleanest. A two-dimensional sweep of the SDR transmit and receive gains, in 1&nbsp;dB steps, gives an EVM map of the whole loop. Its minimum, 1.27%, becomes the baseline: from there, any extra distortion can be attributed to the device and not to the radio.</p>
+          <p>With that baseline fixed, the step attenuator ahead of the power amplifier is reduced one step at a time, which pushes more power into the amplifier. EVM stays low at first and then climbs past the 3.5% limit that 3GPP sets for 256-QAM.</p>
+
+          <div class="fig-row">
+            <figure class="fig">
+              <a href="../assets/img/research/mmwave-evm-heatmap.webp"><img src="../assets/img/research/mmwave-evm-heatmap.webp" width="1200" height="854" loading="lazy" alt="Heat map of EVM over transmit gain and receive gain, with a low-EVM green region, a high-EVM red region at high gains and a marker at the minimum."></a>
+              <figcaption>EVM over the transmit and receive gain sweep. The marker is the operating point with the lowest EVM, 1.27%.</figcaption>
+            </figure>
+            <figure class="fig">
+              <a href="../assets/img/research/mmwave-evm-vs-dsa.webp"><img src="../assets/img/research/mmwave-evm-vs-dsa.webp" width="1194" height="897" loading="lazy" alt="EVM against attenuator setting, rising from about 1.3 percent at 15 dB of attenuation to about 20 percent at 0 dB, crossing a dashed line at 3.5 percent."></a>
+              <figcaption>EVM as the attenuation ahead of the amplifier is removed. The dashed line is the 3.5% limit.
+                <span class="credit">Both figures from <a data-cite="latincom2026-char" href="../index.html#publications">LATINCOM 2026</a>, to appear in IEEE Xplore.</span></figcaption>
+            </figure>
+          </div>
+
+          <h3>Seeing the compression itself</h3>
+          <p>EVM says that the signal got worse, not how. A standard 5G receiver hides the answer, because channel equalization and common-phase-error compensation correct part of what the amplifier did. To get around that, the demodulation chain of the MATLAB 5G Toolbox was modified to tap the samples right after frame synchronization and before any equalization. Plotting those raw I/Q samples against the transmitted ones gives the AM-AM and AM-PM curves directly.</p>
+
+          <figure class="fig narrow">
+            <a href="../assets/img/research/mmwave-iq-extraction.webp"><img src="../assets/img/research/mmwave-iq-extraction.webp" width="1400" height="488" loading="lazy" alt="Receiver processing chain: carrier frequency offset correction, frame synchronization, channel equalization, PDSCH demodulation and EVM computation, with a branch after frame synchronization labelled synchronized baseband I/Q extraction."></a>
+            <figcaption>Where the uncompensated samples are taken from the receiver chain.
+              <span class="credit">Figure from <a data-cite="latincom2026-char" href="../index.html#publications">LATINCOM 2026</a>, to appear in IEEE Xplore.</span></figcaption>
+          </figure>
+
+          <figure class="fig narrow">
+            <a href="../assets/img/research/mmwave-amam-ampm.webp"><img src="../assets/img/research/mmwave-amam-ampm.webp" width="1400" height="1598" loading="lazy" alt="Six panels: AM-AM, AM-PM and 256-QAM constellation, each at the linear operating point and under soft compression. Under compression the AM-AM cloud bends at high input amplitude and the constellation points smear."></a>
+            <figcaption>AM-AM, AM-PM and constellation at the linear point (EVM 1.27%, left) and under soft compression (EVM 5.52%, right). The AM-AM cloud bends at high amplitude and the constellation smears.
+              <span class="credit">Figure from <a data-cite="latincom2026-char" href="../index.html#publications">LATINCOM 2026</a>, to appear in IEEE Xplore.</span></figcaption>
+          </figure>
+
+          <p>The method has a limit that the paper states plainly. At low amplitudes the phase estimate is dominated by the phase noise of the signal source, and at high amplitudes, where compression happens, the high peak-to-average ratio of OFDM leaves few samples. Compression is clear in the AM-AM curve, but the AM-PM trend could not be identified with confidence. Improving that extraction, and modeling the amplifier's memory effects for predistortion, is the next step for this line of work.</p>
+        </section>
+
+        <section id="earlier">
+          <h2>Earlier versions: 5&nbsp;GHz, then 25&nbsp;GHz</h2>
+          <p>The bench grew in two steps before the campaign above. The first version, presented at <a data-cite="lascas2026-testbed" href="../index.html#publications">LASCAS 2026</a>, had no mixers: the SDR generated and analyzed a 5G NR signal at 5&nbsp;GHz and characterized a two-stage amplifier chain in frequency (ACPR), time (power envelope) and modulation (EVM). It showed that a single low-cost radio could replace the generator and analyzer pair for this kind of test.</p>
+          <p>The second version, in <a data-cite="iscas2026" href="../index.html#publications">ISCAS 2026</a>, added the mixers and applied the same three-domain method to a 25&nbsp;GHz amplifier. Sweeping transmit power and receiver gain traces a family of EVM curves shaped like a bathtub: noise dominates on the left, compression on the right, and the flat bottom, at about 1.5% EVM, marks the range of power levels that is usable for 256-QAM.</p>
+
+          <div class="fig-row">
+            <figure class="fig">
+              <a href="../assets/img/research/mmwave-evm-bathtub.webp"><img src="../assets/img/research/mmwave-evm-bathtub.webp" width="1400" height="811" loading="lazy" alt="A family of EVM curves against receiver gain for ten transmit attenuation settings; each curve falls, stays flat near 1.5 percent and rises steeply."></a>
+              <figcaption>EVM “bathtub” curves of the 25&nbsp;GHz chain with a 20&nbsp;MHz signal. Each color is a transmit power level.</figcaption>
+            </figure>
+            <figure class="fig">
+              <a href="../assets/img/research/mmwave-spectral-regrowth.webp"><img src="../assets/img/research/mmwave-spectral-regrowth.webp" width="1400" height="1029" loading="lazy" alt="Power spectral density of the down-converted signal for 5, 10 and 20 MHz bandwidths at several gain settings; the skirts next to the channel rise as gain increases."></a>
+              <figcaption>Spectral regrowth for 5, 10 and 20&nbsp;MHz signals. The shoulders next to the channel rise as the amplifier is driven harder.
+                <span class="credit">Both figures from <a data-cite="iscas2026" href="../index.html#publications">ISCAS 2026</a>, © 2026 IEEE.</span></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="control">
+          <h2>Holding the operating point</h2>
+          <p>The point of lowest EVM does not stay put. Gain drifts with temperature and with the input level, and a chain built from separate modules has no built-in power control. Two of our papers close a loop around the RMS detector to keep the output where it should be.</p>
+          <p>In <a data-cite="lascas2026-fuzzy" href="../index.html#publications">LASCAS 2026</a>, a fuzzy-integral controller on an ESP32 reads the detector and adjusts a step attenuator in a 25&nbsp;GHz transceiver. It settles in about one second without overshoot. With the loop active the EVM averaged 2.62%; with it disabled, a 5&nbsp;dB change in attenuation raised it to as much as 3.17%.</p>
+
+          <figure class="fig slim">
+            <a href="../assets/img/research/mmwave-fuzzy-transient.webp"><img src="../assets/img/research/mmwave-fuzzy-transient.webp" width="1000" height="1703" loading="lazy" alt="Output power against time for two disturbances. After a 5 dB gain step in either direction the power spikes and returns to the minus 30 dBm reference within about one second."></a>
+            <figcaption>Output power after a gain step down (top) and up (bottom) with the fuzzy-integral loop active. The reference is −30&nbsp;dBm.
+              <span class="credit">Figure from <a data-cite="lascas2026-fuzzy" href="../index.html#publications">LASCAS 2026</a>, © 2026 IEEE.</span></figcaption>
+          </figure>
+          <p>In <a data-cite="latincom2026-evm" href="../index.html#publications">LATINCOM 2026</a>, the setpoint is chosen by measurement. An EVM map over transmit power and receive gain locates the minimum, about 1.2%, and the detector reading at that point becomes the reference for a deadband PI regulator running on an STM32. The step response of the loop was then used to identify the plant: the RF chain behaves as a plain gain, and the dynamics are set by the output filter of the detector. Its two time constants are 0.273&nbsp;ms and 0.092&nbsp;ms, and the second one can be predicted from the detector's output network to within 8% without any fitting.</p>
+
+          <div class="fig-row">
+            <figure class="fig">
+              <a href="../assets/img/research/mmwave-evm-map-setpoint.webp"><img src="../assets/img/research/mmwave-evm-map-setpoint.webp" width="1200" height="943" loading="lazy" alt="Map of EVM over transmit power and receive gain with a marker at 1.2 percent RMS, at minus 29.25 dBm and 16 dB."></a>
+              <figcaption>EVM map of the 26&nbsp;GHz chain. The marker is the minimum-EVM point adopted as the control setpoint.</figcaption>
+            </figure>
+            <figure class="fig">
+              <a href="../assets/img/research/mmwave-step-response.webp"><img src="../assets/img/research/mmwave-step-response.webp" width="1400" height="865" loading="lazy" alt="Measured step response at the detector output over 5 milliseconds with a fitted second-order curve on top; the fit reports R squared of 0.9999."></a>
+              <figcaption>Measured step response at the detector output and the fitted second-order model (R² = 0.9999).
+                <span class="credit">Both figures from <a data-cite="latincom2026-evm" href="../index.html#publications">LATINCOM 2026</a>, to appear in IEEE Xplore.</span></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="dpd">
+          <h2>Linearizing the transmitter</h2>
+          <p>The most recent paper, accepted at <a data-cite="lamc2026" href="../index.html#publications">LAMC 2026</a>, applies digital predistortion to the whole 5&nbsp;GHz to 26&nbsp;GHz transmitter. Power sweeps taken stage by stage showed that the dominant nonlinearity sits in the integrated up-conversion stage, while the IF block and the observation path stay close to linear. That matters because the receiver shares silicon with the transmitter, so its linearity has to be checked instead of assumed.</p>
+          <p>The predistorter is a memory polynomial fitted by indirect learning with regularized least squares. Three sizes were compared, with 6, 20 and 36 coefficients. Under moderate compression the 6-coefficient model performed within 0.03 percentage points of EVM and 0.14&nbsp;dB of ACPR of the 36-coefficient one, so the larger models bought nothing here.</p>
+
+          <figure class="fig narrow">
+            <a href="../assets/img/research/mmwave-dpd-psd.webp"><img src="../assets/img/research/mmwave-dpd-psd.webp" width="1300" height="970" loading="lazy" alt="Normalized power spectral density against frequency offset, without predistortion and with it; the skirts outside the 20 MHz channel are a few dB lower with predistortion."></a>
+            <figcaption>Spectrum at the observation path without predistortion (blue) and with the 36-coefficient model (orange). The dashed lines mark the 20&nbsp;MHz channel.
+              <span class="credit">Figure from <a data-cite="lamc2026" href="../index.html#publications">LAMC 2026</a>, accepted for publication.</span></figcaption>
+          </figure>
+
+          <p>The paper's main point is about how the gain is counted. A predistorted waveform has larger peaks, so after normalization it is transmitted at lower average power, and lower power alone improves EVM and ACPR. Comparing at the same gain setting, predistortion seemed to improve ACPR by 4.31&nbsp;dB; comparing at equal output power, measured with the independent RMS detector, the figure was 1.45&nbsp;dB. About two thirds of the apparent improvement was back-off.</p>
+          <p>Counted at equal power over 20 paired hardware runs, predistortion improved EVM by 3.24 percentage points and ACPR by 1.36&nbsp;dB on average. At the nominal operating point, EVM went from 6.47% to 2.65%, inside the 3.5% limit for 256-QAM.</p>
+        </section>
+
+        <section id="role">
+          <h2>What I did</h2>
+          <ul class="bul">
+            <li>Calibrated the bench by hand: the PLL synthesizer (LMX2595), the RMS power detectors (LTC5596) and the SDR.</li>
+            <li>Ran the measurement campaigns, first manually and then with Python and MATLAB scripts I wrote to automate acquisition and processing: raw I/Q capture, EVM, ACPR, AM-AM/AM-PM and insertion loss.</li>
+            <li>Characterized a mmWave power amplifier under soft compression and a band-pass filter using measured data only, which became my first-author paper.</li>
+            <li>Collected the experimental data for the minimum-EVM regulation paper and presented both LATINCOM papers in Cusco.</li>
+            <li>Took part in the predistortion experiments on the 26&nbsp;GHz transmitter.</li>
+          </ul>
+
+          <figure class="fig narrow">
+            <img src="../assets/img/photos/latincom-2026-talk-evm.webp" width="1280" height="974" loading="lazy" alt="Esteban pointing at a projected title slide: Minimum EVM Power Regulation of a Low-Cost 26 GHz SDR mmWave Chain with Sensor-Dominated Loop Dynamics for 5G Systems.">
+            <figcaption>Presenting the power-regulation paper at IEEE LATINCOM 2026 in Cusco, Peru.</figcaption>
+          </figure>
+        </section>
+
+        <section id="papers">
+          <h2>Papers from this project</h2>
+          <!-- Filled in from assets/js/data.js: every publication with project: "mmwave" -->
+          <ol class="pubs" data-pubs="all" data-project="mmwave"></ol>
+          <noscript><p>The list is on the <a href="../index.html#publications">publications section</a> of the home page.</p></noscript>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="next">
+    <div class="wrap">
+      <p><small>Back to</small><a href="../index.html#research">All research</a></p>
+      <p><small>Next project</small><a href="tomosar.html">SAR tomography with half the acquisitions</a></p>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>© 2026 Esteban Gironda Lagrava. Last updated November 2026.</p>
+    <p>Figures from IEEE papers are © IEEE and credited where they appear.</p>
+  </div>
+</footer>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

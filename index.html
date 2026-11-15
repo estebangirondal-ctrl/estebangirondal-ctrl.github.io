@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" data-base="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Esteban Gironda Lagrava | mmWave RF hardware and signal processing</title>
+  <meta name="description" content="Undergraduate researcher at Universidad Privada Boliviana working on low-cost characterization and linearization of 26 GHz 5G hardware with software-defined radios, and on signal processing for SAR tomography and X-ray imaging.">
+  <meta name="author" content="Esteban Gironda Lagrava">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="Esteban Gironda Lagrava">
+  <meta property="og:description" content="Undergraduate researcher in mmWave RF hardware and signal processing. Looking for research internships in 2027 and MS/PhD positions from fall 2028.">
+  <meta property="og:image" content="assets/img/esteban-gironda.jpg">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/archivo-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/stix-two-text-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Esteban Gironda Lagrava",
+    "alternateName": "Carlos Esteban Gironda Lagrava",
+    "jobTitle": "Undergraduate Researcher",
+    "affiliation": { "@type": "CollegeOrUniversity", "name": "Universidad Privada Boliviana" },
+    "address": { "@type": "PostalAddress", "addressLocality": "La Paz", "addressCountry": "BO" },
+    "knowsAbout": ["Millimeter-wave RF hardware", "Power amplifier characterization", "Digital predistortion", "Software-defined radio", "SAR tomography"],
+    "sameAs": [
+      "https://www.linkedin.com/in/carlos-esteban-gironda-lagrava",
+      "https://orcid.org/0009-0002-4176-2450",
+      "https://www.scopus.com/authid/detail.uri?authorId=60592942400"
+    ]
+  }
+  </script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="top-name" href="#about">Esteban Gironda Lagrava</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#awards">Awards</a></li>
+        <li><a href="#cv">CV</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ====================== ABOUT ====================== -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <div class="about-grid">
+        <div>
+          <h1>Esteban Gironda Lagrava</h1>
+          <p class="role">Undergraduate researcher in mmWave RF hardware and signal processing at Universidad Privada Boliviana, La Paz, Bolivia.</p>
+          <div class="bio">
+            <p>Most of my research is about measuring and linearizing millimeter-wave 5G hardware without millimeter-wave instruments. Our group built a testbed in which one low-cost software-defined radio generates and analyzes 5G NR signals at 5&nbsp;GHz while mixers carry them to 26&nbsp;GHz and back. I calibrate it, automate its measurement campaigns in Python and MATLAB, and use it to characterize amplifiers and filters. So far this work has produced six IEEE conference papers, one of them as first author.</p>
+            <p>I also work on signal processing for imaging: SAR tomography with deep learning, and dual-energy X-ray backscatter simulation.</p>
+            <p>I study Electronic and Telecommunications Systems Engineering. My coursework is complete and I am writing my undergraduate thesis; I expect to graduate in December 2027.</p>
+          </div>
+          <p class="actions">
+            <a class="btn" href="files/Esteban_Gironda_CV.pdf">Download CV (PDF)</a>
+            <a href="#contact" data-email>Email</a>
+            <a href="https://www.linkedin.com/in/carlos-esteban-gironda-lagrava" rel="noopener me">LinkedIn</a>
+            <a href="https://orcid.org/0009-0002-4176-2450" rel="noopener me">ORCID</a>
+            <a href="https://www.scopus.com/authid/detail.uri?authorId=60592942400" rel="noopener me">Scopus</a>
+          </p>
+        </div>
+        <div class="about-photo">
+          <img class="portrait" src="assets/img/esteban-gironda.webp" width="300" height="375" alt="Portrait of Esteban Gironda Lagrava" fetchpriority="high">
+        </div>
+      </div>
+
+      <div class="chain">
+        <svg class="sch strip" viewBox="0 0 1000 136" role="img" aria-labelledby="chain-title">
+          <title id="chain-title">Signal chain of the testbed: an SDR transmits at 5 GHz, an amplifier and a mixer bring the signal to 26 GHz, it passes through the device under test, and a second mixer returns it to 5 GHz for the SDR receiver. One local oscillator drives both mixers.</title>
+          <text x="204" y="20" text-anchor="middle">5 GHz IF</text>
+          <text class="rf strong" x="500" y="20" text-anchor="middle">26 GHz RF</text>
+          <text x="796" y="20" text-anchor="middle">5 GHz IF</text>
+
+          <path class="wire draw" pathLength="1" d="M104 62H896"/>
+          <path class="wire rf draw" pathLength="1" d="M317 62H683"/>
+          <path class="thin" d="M300 79V118H487M513 118H700V79"/>
+
+          <rect class="part" x="1" y="40" width="103" height="44" rx="3"/>
+          <text class="strong" x="52" y="67" text-anchor="middle">SDR Tx</text>
+          <path class="part" d="M176 44V80L212 62Z"/>
+          <circle class="part" cx="300" cy="62" r="17"/>
+          <path class="thin" d="M288 50L312 74M312 50L288 74"/>
+          <path class="part rf" d="M372 44V80L408 62Z"/>
+          <rect class="dut" x="452" y="38" width="96" height="48" rx="3"/>
+          <text class="rf strong" x="500" y="67" text-anchor="middle">DUT</text>
+          <path class="part rf" d="M592 44V80L628 62Z"/>
+          <circle class="part" cx="700" cy="62" r="17"/>
+          <path class="thin" d="M688 50L712 74M712 50L688 74"/>
+          <path class="part" d="M788 44V80L824 62Z"/>
+          <rect class="part" x="896" y="40" width="103" height="44" rx="3"/>
+          <text class="strong" x="948" y="67" text-anchor="middle">SDR Rx</text>
+
+          <circle class="part" cx="500" cy="118" r="13"/>
+          <path class="thin" d="M492 118q4 -9 8 0t8 0"/>
+          <text class="small" x="398" y="110" text-anchor="middle">shared LO, doubled</text>
+        </svg>
+        <p class="chain-note">The testbed in one line. A single SDR generates and analyzes 5G NR signals at 5&nbsp;GHz; mixers carry them to 26&nbsp;GHz and back, so the device under test is measured without a millimeter-wave signal generator or analyzer. <a href="projects/mmwave-testbed.html">How it works</a></p>
+      </div>
+
+      <div class="pair">
+        <div>
+          <h2>Research interests</h2>
+          <ul class="plain-list">
+            <li>Characterization and behavioral modeling of mmWave power amplifiers</li>
+            <li>Linearization and digital predistortion</li>
+            <li>SDR-based instrumentation and measurement automation</li>
+            <li>Closed-loop power control of RF front ends</li>
+            <li>Signal processing for radar and X-ray imaging</li>
+          </ul>
+        </div>
+        <div>
+          <h2>What I am looking for</h2>
+          <p>Research internships during 2027, and an MS or PhD position in RF and mmWave engineering starting in fall 2028.</p>
+          <p>I would be glad to hear from groups working on mmWave transmitters, power-amplifier characterization and linearization, or RF measurement techniques. <a href="#contact">Get in touch</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== NEWS ====================== -->
+  <section class="band" id="news">
+    <div class="wrap">
+      <h2 class="band-title">News</h2>
+      <div class="band-body">
+        <!-- The list is filled in from assets/js/data.js -->
+        <ol class="news" id="news-list"></ol>
+        <noscript><p>News and publications are loaded with JavaScript. They are also listed in my <a href="files/Esteban_Gironda_CV.pdf">CV</a>.</p></noscript>
+
+        <div class="shots">
+          <figure>
+            <img src="assets/img/photos/latincom-2026-talk.webp" width="1280" height="796" loading="lazy" alt="Esteban presenting a slide titled Characterization of Millimeter-Wave RF Components Using a Low-Cost SDR Platform for 5G NR Systems.">
+            <figcaption>Presenting my first-author paper at IEEE LATINCOM 2026.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/img/photos/latincom-2026-banner.webp" width="1280" height="1202" loading="lazy" alt="Esteban standing next to the IEEE LATINCOM 2026 conference banner, which shows Machu Picchu.">
+            <figcaption>LATINCOM 2026, Cusco, Peru.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/img/photos/lascas-2026-talk.webp" width="1400" height="1157" loading="lazy" alt="Esteban speaking next to a lectern at IEEE LASCAS 2026.">
+            <figcaption>IEEE LASCAS 2026, Arequipa, Peru.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/img/photos/riao-optilas-2025-talk.webp" width="1400" height="1283" loading="lazy" alt="Esteban at a lectern on stage, with a results slide on link attenuation projected behind him.">
+            <figcaption>RIAO-OPTILAS 2025, Santa Cruz de la Sierra, Bolivia.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== RESEARCH ====================== -->
+  <section class="band" id="research">
+    <div class="wrap">
+      <h2 class="band-title">Research</h2>
+      <div class="band-body">
+
+        <article class="work">
+          <a class="work-fig" href="projects/mmwave-testbed.html">
+            <img src="assets/img/research/mmwave-testbed-photo.webp" width="1600" height="595" loading="lazy" alt="The 26 GHz testbed on the bench: SDR, IF conditioning board, PLL synthesizer, integrated up/down-converter, band-pass filter under test, coupler, RMS power detector and microcontroller, joined by coaxial cables.">
+          </a>
+          <p class="cap">The 26&nbsp;GHz bench as used in <a data-cite="latincom2026-char" href="#publications">LATINCOM 2026</a>. The project page explains each board.</p>
+          <h3><a href="projects/mmwave-testbed.html">A low-cost SDR testbed for 26&nbsp;GHz 5G hardware</a></h3>
+          <p class="when">RF and mmWave. Since September 2025, in Dr. Hugo Condori's group at UPB, with researchers from Universidad Mayor de San Andrés.</p>
+          <dl class="facts">
+            <div>
+              <dt>Problem</dt>
+              <dd>Characterizing mmWave amplifiers and filters normally takes vector signal generators, signal analyzers and network analyzers that cost upwards of $100,000 and that many labs, ours included, do not have.</dd>
+            </div>
+            <div>
+              <dt>My role</dt>
+              <dd>I calibrate the bench (PLL synthesizer, RMS power detectors, SDR), write the Python and MATLAB scripts that automate acquisition and processing, and characterized a power amplifier and a band-pass filter from measured data only, which became my first-author paper. I also collected the data for the power-regulation work and took part in the predistortion experiments.</dd>
+            </div>
+            <div>
+              <dt>Result</dt>
+              <dd>Six IEEE conference papers. The testbed reaches a residual EVM of 1.27% with 256-QAM 5G NR at 26&nbsp;GHz, resolves a filter's 24.25 to 28&nbsp;GHz passband without a network analyzer, and exposes AM-AM compression from raw I/Q samples. With memory-polynomial predistortion the transmitter's EVM falls from 6.47% to 2.65%.</dd>
+            </div>
+          </dl>
+          <p class="links">
+            <a href="projects/mmwave-testbed.html">Project page</a>
+            <a href="#pub-latincom2026-char">First-author paper</a>
+            <a href="https://doi.org/10.1109/ISCAS66217.2026.11562694" rel="noopener">ISCAS 2026 paper (DOI)</a>
+          </p>
+        </article>
+
+        <div class="duo">
+          <article class="work">
+            <a class="work-fig boxed" href="projects/tomosar.html">
+              <img src="assets/img/research/tomosar-reconstructions.webp" width="1615" height="724" loading="lazy" alt="Six panels of height against range for one synthetic urban scene: the reference, beamforming, Capon, classical FISTA, the 8-acquisition teacher and the 4-acquisition student.">
+            </a>
+            <p class="cap">Height profiles along one range line: reference, beamforming and Capon (top); FISTA, teacher and student (bottom).</p>
+            <h3><a href="projects/tomosar.html">SAR tomography with half the acquisitions</a></h3>
+            <p class="when">Signal processing. Since August 2026, advised by Dr. Edgar Salazar, with Universidad Católica Boliviana.</p>
+            <dl class="facts">
+              <div>
+                <dt>Problem</dt>
+                <dd>SAR tomography separates scatterers in height by combining several radar passes over a scene. Every pass is costly, and with fewer of them the ground, roofs and facades that share a radar cell become hard to tell apart.</dd>
+              </div>
+              <div>
+                <dt>My role</dt>
+                <dd>I built synthetic urban, forest–savanna and mixed datasets with known ground truth, implemented the classical baselines (beamforming, Capon, ISTA/FISTA) and trained a deep-unrolled network by knowledge distillation: a teacher that sees 8 acquisitions guides a student that sees 4.</dd>
+              </div>
+              <div>
+                <dt>Result</dt>
+                <dd>Preliminary, on synthetic urban scenes: with 4 acquisitions the student lowers the mean Wasserstein-1 error in layover pixels by 34% against ISTA (4.08&nbsp;m to 2.71&nbsp;m).</dd>
+              </div>
+            </dl>
+            <p class="links">
+              <a href="projects/tomosar.html">Project page</a>
+              <a href="files/poster-tomosar-2026.pdf">Poster (PDF, in Spanish)</a>
+            </p>
+          </article>
+
+          <article class="work">
+            <a class="work-fig boxed" href="assets/img/research/xray-zeff-map.webp">
+              <img src="assets/img/research/xray-zeff-map.webp" width="1200" height="745" loading="lazy" alt="A 32 by 32 map of effective atomic number in which a small square region stands out from a uniform background.">
+            </a>
+            <p class="cap">Reconstructed effective atomic number. The bright square is the PMMA block behind the wall.</p>
+            <h3>Dual-energy X-ray backscatter imaging with K-edge filters</h3>
+            <p class="when">Signal processing. Since August 2026, advised by Dr. Edgar Salazar.</p>
+            <dl class="facts">
+              <div>
+                <dt>Problem</dt>
+                <dd>Backscatter scanners inspect an object from one side, for example through a wall. Telling materials apart needs two energy bands, and with a conventional source the two spectra overlap and add noise to the estimate.</dd>
+              </div>
+              <div>
+                <dt>My role</dt>
+                <dd>I ran the Monte Carlo simulations in GATE/Geant4 of an 80&nbsp;kVp source with K-edge filter pairs (Ce–Mo and W–Er, spectra from SPEKTR) and worked on the two-material decomposition in MATLAB, on a carbon–zinc basis.</dd>
+              </div>
+              <div>
+                <dt>Result</dt>
+                <dd>In simulation, PMMA behind a 3&nbsp;mm aluminum wall was identified with under 5% error in effective atomic number (6.82 ± 0.17, against an expected 6.48 to 6.56).</dd>
+              </div>
+            </dl>
+            <p class="links">
+              <a href="files/poster-kedge-xray-stsiva-2026.pdf">Poster (PDF)</a>
+              <a href="#pub-stsiva2026">Citation</a>
+            </p>
+          </article>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== PUBLICATIONS ====================== -->
+  <section class="band" id="publications">
+    <div class="wrap">
+      <h2 class="band-title">Publications</h2>
+      <div class="band-body">
+        <!-- Both lists are filled in from assets/js/data.js -->
+        <h3 class="sub">Conference papers</h3>
+        <ol class="pubs" data-pubs="conference"></ol>
+
+        <h3 class="sub">Posters and abstracts</h3>
+        <ol class="pubs" data-pubs="poster"></ol>
+
+        <p class="profiles">Author profiles: <a href="https://orcid.org/0009-0002-4176-2450" rel="noopener">ORCID 0009-0002-4176-2450</a> and <a href="https://www.scopus.com/authid/detail.uri?authorId=60592942400" rel="noopener">Scopus</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== AWARDS AND LEADERSHIP ====================== -->
+  <section class="band" id="awards">
+    <div class="wrap">
+      <h2 class="band-title">Awards and leadership</h2>
+      <div class="band-body">
+        <h3 class="sub">Awards</h3>
+        <ul class="rows">
+          <li>
+            <h4>Merit scholarship, “100 Scholarships for the Top 100”</h4>
+            <p>Universidad Privada Boliviana.</p>
+          </li>
+          <li>
+            <h4>Honor Roll</h4>
+            <span class="yr">2024, 2025</span>
+            <p>Universidad Privada Boliviana. Current GPA: 91.7 out of 100.</p>
+          </li>
+          <li>
+            <h4>First place nationally, Rally Solar Bolivia</h4>
+            <span class="yr">2025</span>
+            <p>Electrical team leader. We designed the power electronics and energy distribution of a hybrid solar vehicle that won the Bicentennial edition.</p>
+          </li>
+        </ul>
+
+        <h3 class="sub">Leadership</h3>
+        <ul class="rows">
+          <li>
+            <h4>Chapter Secretary, IEEE ComSoc Student Chapter, UPB La Paz</h4>
+            <span class="yr">2026</span>
+            <p>On the organizing teams of Telecom Connect 2026 and the IEEE ComSoc Student Tech Leadership Conference 2026, both held with UMSA and UCB.</p>
+          </li>
+          <li>
+            <h4>President, IEEE ComSoc Student Chapter, UPB La Paz</h4>
+            <span class="yr">2025</span>
+            <p>Organized a talk on the rollout of 5G in Bolivia with ENTEL, a technical visit to the Bolivian Space Agency to see how the Túpac Katari satellite is operated, and a Hack The Box cybersecurity workshop.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== CV ====================== -->
+  <section class="band" id="cv">
+    <div class="wrap">
+      <h2 class="band-title">CV</h2>
+      <div class="band-body">
+        <ul class="rows">
+          <li>
+            <h4>B.S. in Electronic and Telecommunications Systems Engineering</h4>
+            <span class="yr">2022 to 2027 (expected)</span>
+            <p>Universidad Privada Boliviana, La Paz. Coursework completed, undergraduate thesis in progress.</p>
+          </li>
+          <li>
+            <h4>Undergraduate researcher, mmWave RF hardware and linearization</h4>
+            <span class="yr">Sep 2025 to present</span>
+            <p>UPB, in collaboration with UMSA. Advisor: Dr. Hugo Condori.</p>
+          </li>
+          <li>
+            <h4>Undergraduate researcher, signal processing for SAR and X-ray imaging</h4>
+            <span class="yr">Aug 2026 to present</span>
+            <p>UPB, in collaboration with UCB. Advisor: Dr. Edgar Salazar.</p>
+          </li>
+        </ul>
+        <p class="actions">
+          <a class="btn" href="files/Esteban_Gironda_CV.pdf">Download full CV (PDF)</a>
+          <span style="color:var(--muted)">Two pages, updated November 2026.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== CONTACT ====================== -->
+  <section class="band" id="contact">
+    <div class="wrap">
+      <h2 class="band-title">Contact</h2>
+      <div class="band-body">
+        <p>Email is the best way to reach me. I am based in La Paz, Bolivia (UTC−4) and speak Spanish and English.</p>
+        <ul class="contact-list" style="margin-top:1.5rem">
+          <li><span>Email</span><a href="#contact" data-email="show">esteban.gironda.l [at] gmail.com</a></li>
+          <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/carlos-esteban-gironda-lagrava" rel="noopener me">linkedin.com/in/carlos-esteban-gironda-lagrava</a></li>
+          <li><span>ORCID</span><a href="https://orcid.org/0009-0002-4176-2450" rel="noopener me">0009-0002-4176-2450</a></li>
+          <li><span>Scopus</span><a href="https://www.scopus.com/authid/detail.uri?authorId=60592942400" rel="noopener me">Author ID 60592942400</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>© 2026 Esteban Gironda Lagrava. Last updated November 2026.</p>
+    <p>Figures from IEEE papers are © IEEE and credited where they appear.</p>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

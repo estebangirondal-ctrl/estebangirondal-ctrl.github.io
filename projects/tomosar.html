@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" data-base="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAR tomography with half the acquisitions | Esteban Gironda Lagrava</title>
+  <meta name="description" content="A deep-unrolled network trained by knowledge distillation reconstructs SAR tomography height profiles from 4 acquisitions instead of 8. Preliminary results on synthetic urban scenes.">
+  <meta name="author" content="Esteban Gironda Lagrava">
+  <meta property="og:title" content="SAR tomography with half the acquisitions">
+  <meta property="og:description" content="Deep unrolling and knowledge distillation for SAR tomography with fewer passes. Preliminary results on synthetic urban scenes.">
+  <meta property="og:image" content="../assets/img/research/tomosar-reconstructions.webp">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/archivo-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/stix-two-text-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="top-name" href="../index.html">Esteban Gironda Lagrava</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#news">News</a></li>
+        <li><a href="../index.html#research" aria-current="page">Research</a></li>
+        <li><a href="../index.html#publications">Publications</a></li>
+        <li><a href="../index.html#awards">Awards</a></li>
+        <li><a href="../index.html#cv">CV</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="proj-head">
+    <div class="wrap">
+      <p class="crumb"><a href="../index.html#research">Research</a></p>
+      <h1>SAR tomography with half the acquisitions</h1>
+      <p class="lead">Every extra radar pass over a scene costs time and money. This project asks how much of a tomographic reconstruction survives when a network sees 4 passes instead of 8, if it is first taught by a network that saw all of them.</p>
+      <dl class="glance">
+        <div><dt>Period</dt><dd>August 2026 to present</dd></div>
+        <div><dt>Group</dt><dd>Dr. Edgar Salazar (advisor), UPB with Universidad Católica Boliviana</dd></div>
+        <div><dt>My part</dt><dd>Synthetic datasets, classical baselines, unrolled network and distillation</dd></div>
+        <div><dt>Status</dt><dd>Preliminary results on synthetic data; first-author poster</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="doc">
+    <div class="wrap">
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#problem">The problem</a></li>
+          <li><a href="#unrolling">Deep unrolling</a></li>
+          <li><a href="#distillation">Knowledge distillation</a></li>
+          <li><a href="#data">Synthetic data</a></li>
+          <li><a href="#results">Preliminary results</a></li>
+          <li><a href="#limits">Limits and next steps</a></li>
+          <li><a href="#role">What I did</a></li>
+          <li><a href="#poster">Poster</a></li>
+        </ol>
+      </nav>
+
+      <div class="prose">
+
+        <section id="problem">
+          <h2>The problem: every pass counts</h2>
+          <p>SAR tomography (TomoSAR) estimates how radar backscatter is distributed in height. It does so by combining several complex acquisitions of the same scene taken from slightly different positions. How many passes there are, and how they are spaced, sets what can be resolved: with fewer observations the ambiguities grow and contributions at different heights become harder to separate.</p>
+          <p>Cities make this harder. The ground, a roof and a facade can all fall in the same radar cell, an effect called layover, and the reconstruction has to pull them apart. Because those contributions are few and well localized in height, sparse reconstruction and model-based learning are natural tools.</p>
+          <p>The question here is practical: can urban height profiles be reconstructed from fewer acquisitions without losing the layers that matter?</p>
+        </section>
+
+        <section id="unrolling">
+          <h2>Deep unrolling: from the solver to the network</h2>
+          <p>The network estimates a non-negative power profile over height from the covariance of the observations. The covariance is modeled as</p>
+          <p class="eq"><var>C</var> ≈ <var>A</var> diag(<var>p</var>) <var>A</var><sup>H</sup> + σ<sup>2</sup><var>I</var>, &nbsp; with &nbsp; <var>A</var><sub><var>n</var>ℓ</sub> = exp(−<var>j</var> <var>k</var><sub><var>z</var>,<var>n</var></sub> <var>z</var><sub>ℓ</sub>)</p>
+          <p>where <var>p</var> is the power at each height, <var>A</var> encodes the acquisition geometry and σ<sup>2</sup> is the noise level. Instead of iterating a sparse solver hundreds of times, the solver is unrolled into ten stages inspired by FISTA. Each stage keeps the physical update, a sparsity threshold and a learned momentum, and adds a learned correction from a small one-dimensional U-Net that is shared between stages and guided by the point-spread function.</p>
+          <p>Because the acquisition geometry defines the reconstruction operator, the same architecture runs with 8 or with 4 acquisitions. The model assumes that contributions at different heights are uncorrelated.</p>
+        </section>
+
+        <section id="distillation">
+          <h2>Knowledge distillation: 8 acquisitions teach 4</h2>
+          <p>A teacher network is trained with all 8 acquisitions and then frozen. Its weights initialize a student of the same architecture, which only receives 4 of the 8. The student is trained to reproduce the teacher's final profile and also its intermediate profiles, stage by stage.</p>
+
+          <figure class="fig pad">
+            <div class="frame scroll">
+              <svg class="sch" viewBox="6 46 916 340" role="img" aria-labelledby="ts-title ts-desc">
+                <title id="ts-title">Teacher and student networks</title>
+                <desc id="ts-desc">Two rows of ten unrolled reconstruction stages. The teacher row takes an 8 by 8 covariance matrix and outputs a height profile. The student row takes a 4 by 4 covariance matrix from the same scene. The teacher's weights initialize the student, and dashed arrows from the teacher to the student after each stage and at the output show the distillation losses.</desc>
+                <defs>
+                  <marker id="ah" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 .6L8 4L0 7.4Z"/></marker>
+                  <marker id="ahr" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow rf" d="M0 .6L8 4L0 7.4Z"/></marker>
+                </defs>
+
+                <text x="170" y="68"><tspan class="strong">Teacher</tspan><tspan class="small" dx="10">trained on 8 acquisitions, then frozen</tspan></text>
+                <text x="170" y="372"><tspan class="strong rf">Student</tspan><tspan class="small" dx="10">trained on 4 of the same 8 acquisitions</tspan></text>
+
+                <!-- teacher row -->
+                <rect class="part" x="40" y="92" width="56" height="56"/>
+                <path class="thin" style="stroke-width:.8" d="M47 92V148M54 92V148M61 92V148M68 92V148M75 92V148M82 92V148M89 92V148M40 99H96M40 106H96M40 113H96M40 120H96M40 127H96M40 134H96M40 141H96"/>
+                <text class="small" x="68" y="168" text-anchor="middle">8 × 8 covariance</text>
+                <path class="wire" d="M96 120H169" marker-end="url(#ah)"/>
+                <path class="wire" d="M290 120H339" marker-end="url(#ah)"/>
+                <path class="wire" d="M460 120H494"/>
+                <path class="wire" d="M538 120H559" marker-end="url(#ah)"/>
+                <path class="wire" d="M680 120H759" marker-end="url(#ah)"/>
+                <circle class="arrow" cx="506" cy="120" r="2"/><circle class="arrow" cx="516" cy="120" r="2"/><circle class="arrow" cx="526" cy="120" r="2"/>
+                <rect class="part" x="170" y="92" width="120" height="56" rx="3"/>
+                <rect class="part" x="340" y="92" width="120" height="56" rx="3"/>
+                <rect class="part" x="560" y="92" width="120" height="56" rx="3"/>
+                <text class="strong" x="230" y="125" text-anchor="middle">Stage 1</text>
+                <text class="strong" x="400" y="125" text-anchor="middle">Stage 2</text>
+                <text class="strong" x="620" y="125" text-anchor="middle">Stage 10</text>
+                <path class="thin" d="M764 146H884"/>
+                <path class="thin" style="stroke-width:1.75" d="M766 144C784 144 786 100 796 100S808 144 822 144S836 116 846 116S858 144 882 144"/>
+                <text class="small" x="824" y="168" text-anchor="middle">teacher profile over height</text>
+
+                <!-- student row -->
+                <rect class="part rf" x="48" y="280" width="40" height="40"/>
+                <path class="thin rf" style="stroke-width:.8" d="M58 280V320M68 280V320M78 280V320M48 290H88M48 300H88M48 310H88"/>
+                <text class="small" x="68" y="340" text-anchor="middle">4 × 4 covariance</text>
+                <path class="wire rf" d="M88 300H169" marker-end="url(#ahr)"/>
+                <path class="wire rf" d="M290 300H339" marker-end="url(#ahr)"/>
+                <path class="wire rf" d="M460 300H494"/>
+                <path class="wire rf" d="M538 300H559" marker-end="url(#ahr)"/>
+                <path class="wire rf" d="M680 300H759" marker-end="url(#ahr)"/>
+                <circle class="arrow rf" cx="506" cy="300" r="2"/><circle class="arrow rf" cx="516" cy="300" r="2"/><circle class="arrow rf" cx="526" cy="300" r="2"/>
+                <rect class="part rf" x="170" y="272" width="120" height="56" rx="3"/>
+                <rect class="part rf" x="340" y="272" width="120" height="56" rx="3"/>
+                <rect class="part rf" x="560" y="272" width="120" height="56" rx="3"/>
+                <text class="strong rf" x="230" y="305" text-anchor="middle">Stage 1</text>
+                <text class="strong rf" x="400" y="305" text-anchor="middle">Stage 2</text>
+                <text class="strong rf" x="620" y="305" text-anchor="middle">Stage 10</text>
+                <path class="thin rf" d="M764 326H884"/>
+                <path class="thin rf" style="stroke-width:1.75" d="M766 324C784 324 786 284 796 284S810 324 822 324S836 300 846 300S860 324 882 324"/>
+                <text class="small" x="824" y="346" text-anchor="middle">student profile over height</text>
+
+                <!-- what passes from teacher to student -->
+                <path class="thin" d="M230 148V270" marker-end="url(#ah)"/>
+                <text class="small" x="222" y="206" text-anchor="end">weights initialize</text>
+                <text class="small" x="222" y="222" text-anchor="end">the student</text>
+                <path class="thin dash" d="M315 124V294" marker-end="url(#ah)"/>
+                <path class="thin dash" d="M485 124V294" marker-end="url(#ah)"/>
+                <path class="thin dash" d="M720 124V294" marker-end="url(#ah)"/>
+                <text class="small" x="400" y="214" text-anchor="middle">stage-wise distillation</text>
+                <text class="small" x="732" y="214">output distillation</text>
+              </svg>
+            </div>
+            <figcaption>Teacher and student share one architecture of ten unrolled stages. Dashed arrows are the distillation terms of the loss. Redrawn in English from the poster.</figcaption>
+          </figure>
+
+          <p>The student's loss combines four terms:</p>
+          <p class="eq"><var>L</var><sub>S</sub> = <var>L</var><sub>out</sub> + 0.5 <var>L</var><sub>stages</sub> + 0.3 <var>L</var><sub>ref</sub> + 0.1 <var>L</var><sub>phys</sub></p>
+          <p>The output and stage terms compare the student with the teacher. The reference term supervises with the known synthetic profile, and the physics term penalizes the residual of the covariance model. At inference the student uses 4 acquisitions and the teacher is no longer needed.</p>
+        </section>
+
+        <section id="data">
+          <h2>Synthetic data with known ground truth</h2>
+          <p>Training a network like this needs the true height profile of every pixel, which real campaigns rarely provide. I built three synthetic scenarios, urban, forest–savanna and mixed, each with complex observations, an acquisition geometry and reference profiles. Ground, noise and geometry parameters are based on the UAVSAR Lopé data.</p>
+          <p>In the urban scenario every scatterer contributes a complex amplitude set by its power and phase, and the simulation includes radar projection, shadow, noise and phase errors. The results below use this scenario: 100 scenes of 160 by 160 single-look complex pixels, split 80/10/10 into training, validation and test, which gives 24,000, 4,653 and 4,615 profiles once shadowed pixels are excluded. The height axis spans −20 to 60&nbsp;m in 64 bins, and covariances are estimated over a 5 by 5 window.</p>
+
+          <figure class="fig">
+            <a href="../assets/img/research/tomosar-urban-scene.webp"><img src="../assets/img/research/tomosar-urban-scene.webp" width="1600" height="545" loading="lazy" alt="Two maps of a synthetic urban scene, azimuth against ground range in meters: building height above terrain, and scene classes showing ground and buildings."></a>
+            <figcaption>A synthetic urban scene: building height above the terrain (left) and scene classes, ground and buildings (right). Axis labels are in Spanish, as on the poster.</figcaption>
+          </figure>
+
+          <div class="fig-row">
+            <figure class="fig">
+              <a href="../assets/img/research/tomosar-forest-scene.webp"><img src="../assets/img/research/tomosar-forest-scene.webp" width="1017" height="266" loading="lazy" alt="Four panels of the synthetic forest and savanna scenario: power of one acquisition, interferometric phase, pixel type and the train, validation and test split."></a>
+              <figcaption>Forest–savanna scenario: power of one acquisition, interferometric phase, pixel type and data split.</figcaption>
+            </figure>
+            <figure class="fig">
+              <a href="../assets/img/research/tomosar-mixed-scene.webp"><img src="../assets/img/research/tomosar-mixed-scene.webp" width="890" height="266" loading="lazy" alt="Three panels of the mixed scenario: vegetation and building heights, land-cover classes and an urbanization field."></a>
+              <figcaption>Mixed scenario: an urban core inside the forest–savanna mosaic.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="results">
+          <h2>Preliminary results</h2>
+          <p>Teacher and student were evaluated on the 4,615 profiles of the ten urban test scenes and compared with classical ISTA using the same number of acquisitions, 300 iterations and a regularization weight chosen on the validation set. The metric is the mean Wasserstein-1 distance to the reference profile, in meters: how far, on average, the reconstructed power has to move in height to match the truth.</p>
+
+          <div class="tbl-wrap">
+            <table class="data">
+              <caption>Mean Wasserstein-1 distance to the reference profile, in meters. Lower is better.</caption>
+              <thead>
+                <tr><th scope="col">Pixel type</th><th scope="col">ISTA, 8</th><th scope="col">Teacher, 8</th><th scope="col" class="four">ISTA, 4</th><th scope="col" class="four">Student, 4</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Ground</th><td>0.72</td><td>0.46</td><td class="four">1.01</td><td class="four best">0.68</td></tr>
+                <tr><th scope="row">Roof</th><td>1.02</td><td>0.80</td><td class="four">1.35</td><td class="four best">1.05</td></tr>
+                <tr><th scope="row">Layover</th><td>3.30</td><td>2.02</td><td class="four">4.08</td><td class="four best">2.71</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p style="margin-top:1.5rem">With 4 acquisitions the student beats ISTA on all three pixel types. In layover, the hardest case, the error falls by 34%, from 4.08&nbsp;m to 2.71&nbsp;m, and the share of layers recovered rises from 72% to 86%. The student with 4 acquisitions also does better in layover than ISTA does with 8.</p>
+          <p>Two caveats belong next to those numbers. Ghost power outside the support of the reference rises from 0.4% to 1.7%, so the student invents a little structure that is not there. And the teacher with 8 acquisitions remains the best on every pixel type: distillation recovers part of what the missing passes carried, not all of it.</p>
+
+          <figure class="fig">
+            <a href="../assets/img/research/tomosar-reconstructions.webp"><img src="../assets/img/research/tomosar-reconstructions.webp" width="1615" height="724" loading="lazy" alt="Six panels of height against range for one line of a synthetic urban test scene. Beamforming and Capon are smeared in height; FISTA, the teacher and the student show thin layers close to the reference."></a>
+            <figcaption>One range line of a synthetic urban test scene. Top row: reference, beamforming, Capon. Bottom row: classical FISTA, teacher, student. The classical methods and the teacher use 8 acquisitions; the student uses 4.</figcaption>
+          </figure>
+        </section>
+
+        <section id="limits">
+          <h2>Limits and next steps</h2>
+          <ul class="bul">
+            <li>Everything so far is synthetic. The backscatter assigned to roofs and facades is a modeling assumption without numerical validation, and the physical model is simplified.</li>
+            <li>With a large vertical wavenumber, some 4-pass scenes are ambiguous by construction, because sidelobes fall inside the height grid.</li>
+            <li>Next: evaluation on real data, a smaller student network, and metrics reported per scene.</li>
+          </ul>
+        </section>
+
+        <section id="role">
+          <h2>What I did</h2>
+          <ul class="bul">
+            <li>Built the synthetic TomoSAR datasets (urban, forest–savanna and mixed) with known ground truth, using parameters based on UAVSAR Lopé.</li>
+            <li>Implemented the classical baselines: beamforming, Capon and ISTA/FISTA.</li>
+            <li>Implemented the deep-unrolled network and trained it with knowledge distillation from an 8-acquisition teacher to a 4-acquisition student.</li>
+            <li>Presented the work as first author at the Escuela de Primavera en Deep Learning 2026.</li>
+          </ul>
+        </section>
+
+        <section id="poster">
+          <h2>Poster</h2>
+          <!-- Filled in from assets/js/data.js: every publication with project: "tomosar" -->
+          <ol class="pubs" data-pubs="all" data-project="tomosar"></ol>
+          <noscript><p><a href="../files/poster-tomosar-2026.pdf">Poster (PDF, in Spanish)</a></p></noscript>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="next">
+    <div class="wrap">
+      <p><small>Back to</small><a href="../index.html#research">All research</a></p>
+      <p><small>Other project</small><a href="mmwave-testbed.html">A low-cost SDR testbed for 26&nbsp;GHz 5G hardware</a></p>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>© 2026 Esteban Gironda Lagrava. Last updated November 2026.</p>
+    <p>Figures on this page are from our poster.</p>
+  </div>
+</footer>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>
