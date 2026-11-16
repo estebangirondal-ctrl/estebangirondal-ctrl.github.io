@@ -154,42 +154,104 @@ sub, sup { line-height: 0; }
 .top nav a:hover,
 .top nav a[aria-current="page"] { color: var(--mask-deep); }
 
-/* ----- about / hero ----------------------------------------------------- */
+/* ----- hero ------------------------------------------------------------ */
 
-.about { padding-block: 4rem 3.5rem; }
+.hero {
+  --hero-bg: var(--paper);
+  --hero-ink: var(--ink);
+  --hero-soft: var(--muted);
+  --hero-brass: var(--brass);
+  position: relative;
+  overflow: hidden;
+  background: var(--hero-bg);
+  color: var(--hero-ink);
+  padding-block: 4.75rem 5rem;
+}
 
-.about-grid {
+/* 256-QAM constellation under soft compression: outer points pulled in and rotated */
+.qam {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: max(-15rem, calc((100% - 70rem) / 2 - 12rem));
+  width: 30rem;
+  height: auto;
+  transform: translateY(-50%);
+  overflow: visible;
+}
+.qam circle { fill: rgba(13, 92, 70, 0.14); }
+.qam .axis { stroke: rgba(13, 92, 70, 0.1); stroke-width: 1; fill: none; }
+
+.hero-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 15rem;
-  gap: 2rem 4rem;
-  align-items: start;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  gap: 2rem 3.75rem;
+  align-items: center;
 }
-
-.about h1 {
-  font-size: clamp(2.375rem, 1.3rem + 4.4vw, 4rem);
-  font-weight: 720;
-  letter-spacing: -0.028em;
-  line-height: 0.98;
-}
-.about .role {
-  font-family: var(--sans);
-  font-size: 1.125rem;
-  font-weight: 450;
-  line-height: 1.4;
-  color: var(--muted);
-  margin: 1.1rem 0 1.9rem;
-  max-width: 34rem;
-}
-.about .bio { max-width: var(--measure); }
 
 .portrait {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1;
+  border-radius: 50%;
   object-fit: cover;
-  border-radius: 3px;
-  border: 1px solid var(--rule);
-  background: var(--wash);
+  padding: 6px;
+  background: var(--hero-bg);
+  border: 3px solid var(--brass-rule);
 }
+
+.hero-text { max-width: 39rem; }
+
+.hero h1 {
+  font-size: clamp(2.375rem, 1.35rem + 3.6vw, 3.75rem);
+  font-weight: 720;
+  letter-spacing: -0.028em;
+  line-height: 1;
+}
+.statement {
+  font-family: var(--serif);
+  font-size: clamp(1.3125rem, 1.05rem + 0.9vw, 1.6875rem);
+  line-height: 1.32;
+  margin: 1.1rem 0 1rem;
+  max-width: 34rem;
+}
+.role {
+  font: 450 1rem/1.5 var(--sans);
+  color: var(--hero-soft);
+  max-width: 33rem;
+}
+.seeking {
+  font: 500 1rem/1.5 var(--sans);
+  color: var(--hero-brass);
+  border-left: 3px solid var(--hero-brass);
+  padding-left: 0.85rem;
+  margin-top: 1.4rem;
+  max-width: 33rem;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin-top: 2rem;
+  font: 500 0.9375rem/1.2 var(--sans);
+}
+.hero .btn-light {
+  background: var(--mask);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.8rem 1.15rem;
+  border-radius: 3px;
+}
+.hero .btn-light:hover { background: var(--mask-deep); }
+
+/* ----- about ------------------------------------------------------------ */
+
+.bio p { max-width: var(--measure); }
+.band-about .chain.full { grid-column: 1 / -1; }
+.band-about .pair { grid-column: 2; margin-top: 0; max-width: 46rem; }
 
 .actions {
   display: flex;
@@ -212,9 +274,9 @@ sub, sup { line-height: 0; }
 
 /* the signal chain: the one drawn element on the page */
 .chain {
-  margin-top: 3.5rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--rule);
+  margin-block: 1rem 0.5rem;
+  padding-block: 2rem;
+  border-block: 1px solid var(--rule);
 }
 .chain svg { width: 100%; overflow: visible; }
 .chain-note {
@@ -261,7 +323,8 @@ sub, sup { line-height: 0; }
   gap: 2rem 4rem;
   margin-top: 3rem;
 }
-.pair h2 {
+.pair h2,
+.pair h3 {
   font-size: 1.0625rem;
   font-weight: 650;
   margin-bottom: 0.8rem;
@@ -637,7 +700,8 @@ table.data .four { background: var(--mask-wash); padding-left: 0.6rem; padding-r
 @media (max-width: 60rem) {
   :root { --gap: 2.5rem; --rail: 9rem; }
   .top nav ul { gap: 1.1rem; }
-  .about-grid { gap: 2rem 2.5rem; grid-template-columns: minmax(0, 1fr) 12rem; }
+  .hero-grid { grid-template-columns: 12rem minmax(0, 1fr); gap: 2rem 2.75rem; }
+  .qam { width: 26rem; opacity: 0.8; }
   .glance { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .glance > div:nth-child(n + 3) { border-top: 1px solid var(--rule); }
 }
@@ -653,11 +717,14 @@ table.data .four { background: var(--mask-wash); padding-left: 0.6rem; padding-r
   .top nav::-webkit-scrollbar { display: none; }
   .top nav ul { padding: 0.45rem 1.25rem 0.55rem; gap: 1.35rem; width: max-content; }
 
-  .about { padding-block: 2.25rem 2.75rem; }
-  .about-grid { grid-template-columns: minmax(0, 1fr); }
-  .about-photo { order: -1; width: 8.5rem; }
-  .about .role { font-size: 1.0625rem; margin-bottom: 1.5rem; }
-  .chain { margin-top: 2.5rem; padding-top: 1.5rem; }
+  .hero { padding-block: 2.5rem 3rem; }
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
+  .portrait { width: 8.5rem; padding: 4px; }
+  .qam { width: 21rem; top: -3.5rem; right: -7rem; transform: none; opacity: 0.75; }
+  .statement { margin-top: 0.9rem; }
+  .hero-actions { gap: 0.75rem 1.25rem; margin-top: 1.6rem; }
+  .band-about .pair { grid-column: 1; }
+  .chain { padding-block: 1.5rem; }
   .sch.strip text { display: none; }
   .sch.strip .wire, .sch.strip .part, .sch.strip .thin { stroke-width: 3.4; }
   .sch.strip .wire.rf, .sch.strip .dut { stroke-width: 4.4; }
@@ -700,9 +767,53 @@ table.data .four { background: var(--mask-wash); padding-left: 0.6rem; padding-r
 }
 
 @media print {
-  .top, .skip, .more, .toc, .next, .chain { display: none !important; }
+  .top, .skip, .more, .toc, .next, .chain, .lightbox { display: none !important; }
   body { font-size: 11pt; }
-  .band, .about { padding-block: 1.25rem; }
+  .band { padding-block: 1.25rem; }
+  .hero { padding-block: 0 1rem; }
+  .qam { display: none; }
   .news li[hidden] { display: grid; }
   a { color: inherit; }
+}
+
+/* ----- full-size viewer for photos and figures ------------------------- */
+
+.zoom, .fig a { cursor: zoom-in; }
+.lightbox {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  max-width: min(94vw, 90rem);
+  max-height: 96vh;
+  overflow: visible;
+}
+.lightbox::backdrop { background: rgba(8, 28, 22, 0.95); }
+.lightbox figure { margin: 0; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  margin-inline: auto;
+  border-radius: 3px;
+  background: #fff;
+}
+.lightbox figcaption {
+  color: #fff;
+  font: 400 0.9375rem/1.45 var(--sans);
+  max-width: 52rem;
+  margin: 0.8rem auto 0;
+  text-align: center;
+}
+.lightbox-close {
+  position: fixed;
+  top: 0.9rem;
+  right: 0.9rem;
+  background: #fff;
+  color: var(--mask-deep);
+  border: 0;
+  border-radius: 3px;
+  padding: 0.55rem 0.85rem;
+  font: 600 0.875rem/1 var(--sans);
+  cursor: pointer;
 }

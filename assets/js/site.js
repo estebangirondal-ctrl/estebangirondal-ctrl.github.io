@@ -154,6 +154,39 @@
   renderEmail();
   renderCounts();
 
+  /* ----- photo and figure viewer: links to an image open it full size on the page ----- */
+  function setupViewer() {
+    if (typeof HTMLDialogElement !== "function") return;   // very old browser: the link just opens the image
+    var dlg = document.createElement("dialog");
+    dlg.className = "lightbox";
+    dlg.innerHTML = '<button type="button" class="lightbox-close">Close</button>' +
+      '<figure><img alt=""><figcaption></figcaption></figure>';
+    document.body.appendChild(dlg);
+    var img = dlg.querySelector("img");
+    var cap = dlg.querySelector("figcaption");
+    dlg.querySelector(".lightbox-close").addEventListener("click", function () { dlg.close(); });
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener("close", function () { img.removeAttribute("src"); });
+
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("a[href]");
+      if (!a || !/\.(webp|jpe?g|png)$/i.test(a.getAttribute("href")) || !a.querySelector("img")) return;
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;   // let "open in new tab" work
+      e.preventDefault();
+      var thumb = a.querySelector("img");
+      var fig = a.closest("figure");
+      var fc = fig && fig.querySelector("figcaption");
+      var near = a.nextElementSibling;
+      var text = fc ? fc.textContent : (near && near.classList.contains("cap") ? near.textContent : "");
+      img.src = a.href;
+      img.alt = thumb.alt;
+      cap.textContent = text.replace(/\s+/g, " ").trim();
+      cap.hidden = !cap.textContent;
+      dlg.showModal();
+    });
+  }
+  setupViewer();
+
   /* if the page was opened with #pub-..., the target did not exist yet: jump to it now */
   if (location.hash && location.hash.indexOf("#pub-") === 0) {
     var t = document.getElementById(location.hash.slice(1));

@@ -6,7 +6,7 @@ Sitio estático (HTML, CSS y un poco de JavaScript). No hay nada que compilar ni
 
 | Ruta | Qué es | ¿Lo editas? |
 |---|---|---|
-| `index.html` | Página principal: About, News, Research, Publications, Awards, CV, Contact | Solo para cambiar textos fijos (bio, tarjetas de Research, premios) |
+| `index.html` | Página principal: portada, About, News, Research, Publications, Awards, CV, Contact | Solo para cambiar textos fijos (bio, tarjetas de Research, premios) |
 | `projects/mmwave-testbed.html` | Subpágina del testbed de 26 GHz | Solo para cambiar su texto |
 | `projects/tomosar.html` | Subpágina de TomoSAR | Solo para cambiar su texto |
 | `assets/js/data.js` | **Noticias y publicaciones** | **Sí, este es el archivo del día a día** |
@@ -125,9 +125,19 @@ En su bloque de `data.js`: escribe el DOI en `doi` y cambia `status` a `"publish
 
 **Subir un póster o PDF.** Súbelo a `files/` y enlázalo desde `links` en la publicación correspondiente.
 
-**Cambiar la bio, los intereses o "What I am looking for".** Están en `index.html`, dentro de la sección marcada con `<!-- ABOUT -->`. Cambia solo el texto entre las etiquetas.
+**Cambiar la portada (franja verde).** Está en `index.html`, en la sección marcada con `<!-- HERO -->`: nombre, frase principal, línea de afiliación, línea "Looking for…" y botones. Cambia solo el texto entre las etiquetas. La constelación de fondo es decorativa; no hace falta tocarla.
 
-**Cambiar una imagen.** Sube la nueva a `assets/img/...` con el mismo nombre que la anterior, o cambia el nombre en el `src="..."` del HTML.
+**Cambiar la bio, los intereses o "What I am looking for".** Están en `index.html`, en la sección marcada con `<!-- ABOUT -->`.
+
+**Cambiar una imagen.** Las fotos y figuras del sitio vienen en varios tamaños (por ejemplo `latincom-2026-talk.webp`, `latincom-2026-talk-w360.webp`, `-w480`, `-w960`), y el atributo `srcset` del HTML le dice al navegador cuál usar según la pantalla. Así las miniaturas se ven nítidas y no pixeladas. Si reemplazas una de esas imágenes:
+- o subes también las versiones `-w360`/`-w480`/`-w960` con el mismo contenido,
+- o, más simple, borras los atributos `srcset="…"` y `sizes="…"` de esa `<img>` y dejas solo `src`.
+
+Para una imagen nueva basta con `src`, pero súbela de un ancho cercano al doble del que ocupa en pantalla (unos 400–800 px para miniaturas). Una imagen mucho más grande que su recuadro es justo lo que se ve pixelado.
+
+**Cambiar tu foto de perfil.** La portada usa `assets/img/esteban-gironda-300.webp` y `esteban-gironda-600.webp`: dos copias cuadradas de la misma foto, de 300 y 600 px. Reemplaza ambas (mismo nombre, recorte cuadrado con la cara centrada). `esteban-gironda.jpg` es la que aparece al compartir el enlace.
+
+**Ver una foto o figura en grande.** Al hacer clic en una foto de conferencia o en una figura, se abre a tamaño completo sobre la página; se cierra con Esc, con el botón Close o haciendo clic fuera.
 
 **Fecha del pie de página.** "Last updated November 2026" está al final de los tres archivos HTML.
 

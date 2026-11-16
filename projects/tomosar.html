@@ -164,17 +164,17 @@
           <p>In the urban scenario every scatterer contributes a complex amplitude set by its power and phase, and the simulation includes radar projection, shadow, noise and phase errors. The results below use this scenario: 100 scenes of 160 by 160 single-look complex pixels, split 80/10/10 into training, validation and test, which gives 24,000, 4,653 and 4,615 profiles once shadowed pixels are excluded. The height axis spans −20 to 60&nbsp;m in 64 bins, and covariances are estimated over a 5 by 5 window.</p>
 
           <figure class="fig">
-            <a href="../assets/img/research/tomosar-urban-scene.webp"><img src="../assets/img/research/tomosar-urban-scene.webp" width="1600" height="545" loading="lazy" alt="Two maps of a synthetic urban scene, azimuth against ground range in meters: building height above terrain, and scene classes showing ground and buildings."></a>
+            <a href="../assets/img/research/tomosar-urban-scene.webp"><img src="../assets/img/research/tomosar-urban-scene.webp" srcset="../assets/img/research/tomosar-urban-scene-w480.webp 480w, ../assets/img/research/tomosar-urban-scene-w960.webp 960w, ../assets/img/research/tomosar-urban-scene.webp 1600w" sizes="(max-width: 47.5rem) 89vw, 798px" width="1600" height="545" loading="lazy" alt="Two maps of a synthetic urban scene, azimuth against ground range in meters: building height above terrain, and scene classes showing ground and buildings."></a>
             <figcaption>A synthetic urban scene: building height above the terrain (left) and scene classes, ground and buildings (right). Axis labels are in Spanish, as on the poster.</figcaption>
           </figure>
 
           <div class="fig-row">
             <figure class="fig">
-              <a href="../assets/img/research/tomosar-forest-scene.webp"><img src="../assets/img/research/tomosar-forest-scene.webp" width="1017" height="266" loading="lazy" alt="Four panels of the synthetic forest and savanna scenario: power of one acquisition, interferometric phase, pixel type and the train, validation and test split."></a>
+              <a href="../assets/img/research/tomosar-forest-scene.webp"><img src="../assets/img/research/tomosar-forest-scene.webp" srcset="../assets/img/research/tomosar-forest-scene-w480.webp 480w, ../assets/img/research/tomosar-forest-scene.webp 1017w" sizes="(max-width: 47.5rem) 89vw, 386px" width="1017" height="266" loading="lazy" alt="Four panels of the synthetic forest and savanna scenario: power of one acquisition, interferometric phase, pixel type and the train, validation and test split."></a>
               <figcaption>Forest–savanna scenario: power of one acquisition, interferometric phase, pixel type and data split.</figcaption>
             </figure>
             <figure class="fig">
-              <a href="../assets/img/research/tomosar-mixed-scene.webp"><img src="../assets/img/research/tomosar-mixed-scene.webp" width="890" height="266" loading="lazy" alt="Three panels of the mixed scenario: vegetation and building heights, land-cover classes and an urbanization field."></a>
+              <a href="../assets/img/research/tomosar-mixed-scene.webp"><img src="../assets/img/research/tomosar-mixed-scene.webp" srcset="../assets/img/research/tomosar-mixed-scene-w480.webp 480w, ../assets/img/research/tomosar-mixed-scene.webp 890w" sizes="(max-width: 47.5rem) 89vw, 386px" width="890" height="266" loading="lazy" alt="Three panels of the mixed scenario: vegetation and building heights, land-cover classes and an urbanization field."></a>
               <figcaption>Mixed scenario: an urban core inside the forest–savanna mosaic.</figcaption>
             </figure>
           </div>
@@ -202,7 +202,7 @@
           <p>Two caveats belong next to those numbers. Ghost power outside the support of the reference rises from 0.4% to 1.7%, so the student invents a little structure that is not there. And the teacher with 8 acquisitions remains the best on every pixel type: distillation recovers part of what the missing passes carried, not all of it.</p>
 
           <figure class="fig">
-            <a href="../assets/img/research/tomosar-reconstructions.webp"><img src="../assets/img/research/tomosar-reconstructions.webp" width="1615" height="724" loading="lazy" alt="Six panels of height against range for one line of a synthetic urban test scene. Beamforming and Capon are smeared in height; FISTA, the teacher and the student show thin layers close to the reference."></a>
+            <a href="../assets/img/research/tomosar-reconstructions.webp"><img src="../assets/img/research/tomosar-reconstructions.webp" srcset="../assets/img/research/tomosar-reconstructions-w480.webp 480w, ../assets/img/research/tomosar-reconstructions-w960.webp 960w, ../assets/img/research/tomosar-reconstructions.webp 1615w" sizes="(max-width: 47.5rem) 89vw, 798px" width="1615" height="724" loading="lazy" alt="Six panels of height against range for one line of a synthetic urban test scene. Beamforming and Capon are smeared in height; FISTA, the teacher and the student show thin layers close to the reference."></a>
             <figcaption>One range line of a synthetic urban test scene. Top row: reference, beamforming, Capon. Bottom row: classical FISTA, teacher, student. The classical methods and the teacher use 8 acquisitions; the student uses 4.</figcaption>
           </figure>
         </section>
