@@ -776,6 +776,37 @@ table.data .four { background: var(--mask-wash); padding-left: 0.6rem; padding-r
   a { color: inherit; }
 }
 
+/* ----- Rally Solar photos (awards) ------------------------------------- */
+
+.rally { margin: 1.75rem 0 3rem; }
+.rally-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.75fr 2.2fr;
+  gap: 0.75rem;
+}
+.rally-grid a { display: block; }
+.rally-grid img {
+  width: 100%;
+  height: 13rem;
+  object-fit: cover;
+  border-radius: 3px;
+  background: var(--wash);
+}
+.rally-grid a:nth-child(1) img { object-position: 50% 62%; }
+.rally-grid a:nth-child(3) img { object-position: 0% 50%; }
+.rally figcaption {
+  font: 400 0.875rem/1.45 var(--sans);
+  color: var(--muted);
+  margin-top: 0.6rem;
+  max-width: var(--measure);
+}
+@media (max-width: 47.5rem) {
+  .rally-grid { grid-template-columns: 1fr 1.6fr; gap: 0.5rem; }
+  .rally-grid img { height: 9.5rem; }
+  .rally-grid a:nth-child(3) { grid-column: 1 / -1; }
+  .rally-grid a:nth-child(3) img { height: auto; aspect-ratio: 2 / 1; }
+}
+
 /* ----- full-size viewer for photos and figures ------------------------- */
 
 .zoom, .fig a { cursor: zoom-in; }

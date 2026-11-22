@@ -177,7 +177,8 @@
       var fig = a.closest("figure");
       var fc = fig && fig.querySelector("figcaption");
       var near = a.nextElementSibling;
-      var text = fc ? fc.textContent : (near && near.classList.contains("cap") ? near.textContent : "");
+      var text = a.getAttribute("data-caption") ||
+        (fc ? fc.textContent : (near && near.classList.contains("cap") ? near.textContent : ""));
       img.src = a.href;
       img.alt = thumb.alt;
       cap.textContent = text.replace(/\s+/g, " ").trim();
