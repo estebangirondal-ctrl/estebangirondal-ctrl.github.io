@@ -776,6 +776,29 @@ table.data .four { background: var(--mask-wash); padding-left: 0.6rem; padding-r
   a { color: inherit; }
 }
 
+/* ----- full-paper box at the top of a project section ------------------ */
+
+.paper-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin: 0 0 1.75rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--brass);
+  border-radius: 3px;
+  background: var(--brass-wash);
+}
+.paper-cta .btn { flex: none; }
+.paper-cta p {
+  flex: 1 1 18rem;
+  margin: 0;
+  font: 450 0.9375rem/1.45 var(--sans);
+  color: var(--ink);
+}
+.paper-cta cite { font-style: normal; color: var(--muted); }
+
 /* ----- Rally Solar photos (awards) ------------------------------------- */
 
 .rally { margin: 1.75rem 0 3rem; }

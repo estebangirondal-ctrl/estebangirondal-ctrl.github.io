@@ -36,6 +36,7 @@ window.SITE_DATA = {
      --------------------------------------------------------------------------- */
   news: [
     { date: "2026-12", text: "Heading to Buenos Aires for IEEE LAMC 2026 (December 9–11), where our paper on low-complexity digital predistortion of a 26 GHz transmitter will be presented as a poster." },
+    { date: "2026-11", text: "The full text of my first-author LATINCOM 2026 paper, on characterizing mmWave components with a low-cost SDR platform, is now available: [read the paper (PDF)](files/Gironda_LATINCOM2026_mmWave_characterization.pdf)." },
     { date: "2026-11", text: "Presented two papers at IEEE LATINCOM 2026 in Cusco, Peru: my first-author paper on [characterizing mmWave components with a low-cost SDR platform](#pub-latincom2026-char), and our work on minimum-EVM power regulation of the 26 GHz chain." },
     { date: "2026-11", text: "First-author poster on [SAR tomography with fewer acquisitions](projects/tomosar.html) at the Escuela de Primavera en Deep Learning 2026." },
     { date: "2026-09", text: "Our poster on K-edge X-ray backscatter imaging was presented at STSIVA 2026 in Bucaramanga, Colombia." },
@@ -111,7 +112,7 @@ window.SITE_DATA = {
       title: "Characterization of Millimeter-Wave RF Components Using a Low-Cost SDR Platform for 5G NR Systems",
       venue: "in *Proc. IEEE Latin-American Conf. Commun. (LATINCOM)*, Cusco, Peru, Nov. 2026, to appear",
       doi: "",
-      links: [],
+      links: [{ label: "Full paper (PDF)", url: "files/Gironda_LATINCOM2026_mmWave_characterization.pdf" }],
     },
     {
       id: "latincom2026-evm",

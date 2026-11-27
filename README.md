@@ -123,6 +123,8 @@ En su bloque de `data.js`: escribe el DOI en `doi` y cambia `status` a `"publish
 
 **Actualizar el CV.** Sube el PDF nuevo a la carpeta `files/` con el mismo nombre, `Esteban_Gironda_CV.pdf` (en GitHub: entra a `files/` → **Add file** → **Upload files**). El CV que está publicado no tiene tu número de teléfono; expórtalo así también en las próximas versiones.
 
+**Papers completos en PDF.** Solo se puede publicar tu versión aceptada (la que enviaste por PDF eXpress), nunca el PDF descargado de IEEE Xplore, y siempre con el aviso de copyright de IEEE en la primera página. `files/Gironda_LATINCOM2026_mmWave_characterization.pdf` ya lo tiene. Cuando salga el DOI, agrégalo en `data.js` como se explica arriba.
+
 **Subir un póster o PDF.** Súbelo a `files/` y enlázalo desde `links` en la publicación correspondiente.
 
 **Cambiar la portada (franja verde).** Está en `index.html`, en la sección marcada con `<!-- HERO -->`: nombre, frase principal, línea de afiliación, línea "Looking for…" y botones. Cambia solo el texto entre las etiquetas. La constelación de fondo es decorativa; no hace falta tocarla.

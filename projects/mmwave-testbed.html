@@ -43,7 +43,7 @@
       <dl class="glance">
         <div><dt>Period</dt><dd>September 2025 to present</dd></div>
         <div><dt>Group</dt><dd>Dr. Hugo Condori (advisor), UPB with Universidad Mayor de San Andrés</dd></div>
-        <div><dt>My part</dt><dd>Bench calibration, measurement automation, first-author characterization study</dd></div>
+        <div><dt>My part</dt><dd>Bench calibration, measurement automation, first-author characterization study (<a href="../files/Gironda_LATINCOM2026_mmWave_characterization.pdf">full paper, PDF</a>)</dd></div>
         <div><dt>Output</dt><dd>Six IEEE conference papers, three already in IEEE Xplore</dd></div>
       </dl>
     </div>
@@ -168,6 +168,10 @@
 
         <section id="filter">
           <h2>Measuring a filter without a network analyzer</h2>
+          <div class="paper-cta">
+            <a class="btn" href="../files/Gironda_LATINCOM2026_mmWave_characterization.pdf">Read the full paper (PDF)</a>
+            <p>The filter and amplifier measurements below are from my first-author paper: <cite>E. Gironda Lagrava et al., “Characterization of Millimeter-Wave RF Components Using a Low-Cost SDR Platform for 5G NR Systems,” IEEE LATINCOM 2026.</cite></p>
+          </div>
           <p>A filter needs no modulated signal, so a calibrated power reading is enough. The first step is to trust the detector: its output voltage was compared against a spectrum analyzer while the SDR swept a 5&nbsp;GHz tone over 50&nbsp;dB. The response is linear, with a slope of 28.82&nbsp;mV/dB and R² = 0.9997.</p>
           <p>The LO is then swept so that the converter output moves from 22 to 30&nbsp;GHz, and the power is recorded twice at every frequency: at the mixer output alone, and after the filter. Insertion loss is the difference between the two. Because both readings come from the same detector, its offset cancels, and what remains is a slope mismatch between 5 and 26&nbsp;GHz that the detector's flat response bounds to about 1%.</p>
 
@@ -188,6 +192,10 @@
 
         <section id="amplifier">
           <h2>Stressing an amplifier with a 5G waveform</h2>
+          <div class="paper-cta">
+            <a class="btn" href="../files/Gironda_LATINCOM2026_mmWave_characterization.pdf">Read the full paper (PDF)</a>
+            <p>The amplifier measurements below are from my first-author paper: <cite>E. Gironda Lagrava et al., “Characterization of Millimeter-Wave RF Components Using a Low-Cost SDR Platform for 5G NR Systems,” IEEE LATINCOM 2026.</cite></p>
+          </div>
           <p>For an active device the first job is to find where the testbed itself is cleanest. A two-dimensional sweep of the SDR transmit and receive gains, in 1&nbsp;dB steps, gives an EVM map of the whole loop. Its minimum, 1.27%, becomes the baseline: from there, any extra distortion can be attributed to the device and not to the radio.</p>
           <p>With that baseline fixed, the step attenuator ahead of the power amplifier is reduced one step at a time, which pushes more power into the amplifier. EVM stays low at first and then climbs past the 3.5% limit that 3GPP sets for 256-QAM.</p>
 
